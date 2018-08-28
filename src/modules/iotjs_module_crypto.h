@@ -1,4 +1,4 @@
-/* Copyright 2017-present Samsung Electronics Co., Ltd. and other contributors
+/* Copyright 2018-present Samsung Electronics Co., Ltd. and other contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,22 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var assert = require('assert');
+#ifndef IOTJS_MODULE_CRYPTO_H
+#define IOTJS_MODULE_CRYPTO_H
 
-var currentPath = process.cwd();
-
-try {
-  process.chdir('/');
-} catch (err) {
-  console.log('invalid path');
-}
-
-var newPath = process.cwd();
-if (process.platform === "windows") {
-  /* check if the path is in format: <Drive Letter>:\ */
-  assert.equal(newPath.substr(1), ':\\');
-} else {
-  assert.equal(newPath, '/');
-}
-
-process.chdir(currentPath);
+size_t iotjs_sha1_encode(unsigned char **out_buff, const unsigned char *in_buff,
+                         size_t buff_len);
+#endif /* IOTJS_MODULE_CRYPTO_H */

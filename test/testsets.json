@@ -53,6 +53,12 @@
       ]
     },
     {
+      "name": "test_crypto.js",
+      "required-modules": [
+        "crypto"
+      ]
+    },
+    {
       "name": "test_dgram_1_server_1_client.js",
       "required-modules": [
         "dgram"
@@ -405,9 +411,10 @@
       "skip": [
         "darwin",
         "nuttx",
-        "tizenrt"
+        "tizenrt",
+        "windows"
       ],
-      "reason": "embedded and macos does not support dynamic loading",
+      "reason": "embedded, macos, and windows does not support dynamic loading",
       "required-modules": [
         "fs"
       ]
@@ -785,6 +792,12 @@
       "required-modules": [
         "util"
       ]
+    },
+    {
+      "name": "test_websocket.js",
+      "required-modules": [
+        "websocket"
+      ]
     }
   ],
   "run_pass/issue": [
@@ -906,6 +919,10 @@
     },
     {
       "name": "test-issue-1360.js",
+      "expected-failure": true
+    },
+    {
+      "name": "test-issue-1570.js",
       "expected-failure": true
     },
     {

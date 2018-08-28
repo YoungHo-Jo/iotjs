@@ -1,4 +1,4 @@
-/* Copyright 2016-present Samsung Electronics Co., Ltd. and other contributors
+/* Copyright 2018-present Samsung Electronics Co., Ltd. and other contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,5 @@
  * limitations under the License.
  */
 
-var fs = require('fs');
-
-function Console() {
-  return this;
-}
-
-Console.prototype.log =
-Console.prototype.info =
-Console.prototype.warn =
-Console.prototype.error = function() {
-  /* Do Nothing */
-};
-
-module.exports = new Console();
+Object.freeze(process);
+throw new Error("Some error");

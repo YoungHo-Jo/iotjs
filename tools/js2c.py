@@ -55,7 +55,7 @@ def force_str(string):
 
 
 def parse_literals(code):
-    JERRY_SNAPSHOT_VERSION = 13
+    JERRY_SNAPSHOT_VERSION = 14
     JERRY_SNAPSHOT_MAGIC = 0x5952524A
 
     literals = set()
@@ -384,5 +384,5 @@ if __name__ == "__main__":
     else:
         print('Using "%s" as snapshot tool' % options.snapshot_tool)
 
-    modules = options.modules.replace(',', ' ').split()
+    modules = options.modules.split(',')
     js2c(options.buildtype, modules, options.snapshot_tool, options.verbose)

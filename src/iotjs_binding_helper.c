@@ -133,24 +133,6 @@ jerry_value_t iotjs_invoke_callback_with_result(jerry_value_t jfunc,
 }
 
 
-// Make a callback for the given `function` with `this_` binding and `args`
-// arguments. The next tick callbacks registered via `process.nextTick()`
-// will be called after the callback function `function` returns.
-void iotjs_make_callback(jerry_value_t jfunc, jerry_value_t jthis,
-                         const iotjs_jargs_t* jargs) {
-  jerry_value_t result = iotjs_make_callback_with_result(jfunc, jthis, jargs);
-  jerry_release_value(result);
-}
-
-
-jerry_value_t iotjs_make_callback_with_result(jerry_value_t jfunc,
-                                              jerry_value_t jthis,
-                                              const iotjs_jargs_t* jargs) {
-  return iotjs_invoke_callback_with_result(jfunc, jthis, jargs->argv,
-                                           jargs->argc);
-}
-
-
 int iotjs_process_exitcode() {
   const jerry_value_t process = iotjs_module_get("process");
 
@@ -163,6 +145,11 @@ int iotjs_process_exitcode() {
   } else {
     exitcode = (uint8_t)iotjs_jval_as_number(num_val);
   }
+
+  uint8_t native_exitcode = iotjs_environment_get()->exitcode;
+  if (native_exitcode != exitcode && native_exitcode) {
+    exitcode = native_exitcode;
+  }
   jerry_release_value(num_val);
   jerry_release_value(jexitcode);
   return (int)exitcode;
@@ -171,5 +158,15 @@ int iotjs_process_exitcode() {
 
 void iotjs_set_process_exitcode(int code) {
   const jerry_value_t process = iotjs_module_get("process");
-  iotjs_jval_set_property_number(process, IOTJS_MAGIC_STRING_EXITCODE, code);
+  jerry_value_t jstring =
+      jerry_create_string((jerry_char_t*)IOTJS_MAGIC_STRING_EXITCODE);
+  jerry_value_t jcode = jerry_create_number(code);
+  jerry_value_t ret_val = jerry_set_property(process, jstring, jcode);
+  if (jerry_value_is_error(ret_val)) {
+    iotjs_environment_get()->exitcode = 1;
+  }
+
+  jerry_release_value(ret_val);
+  jerry_release_value(jstring);
+  jerry_release_value(jcode);
 }
